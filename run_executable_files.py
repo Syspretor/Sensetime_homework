@@ -28,4 +28,4 @@ def traversing_dir(dirname):
             if file_type in filter:
                 result.append(file_path)
 
-    return result
+    return sorted(result)#return a list contains all the executable file path which sorted in lexicograhic order
