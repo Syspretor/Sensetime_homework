@@ -9,6 +9,8 @@ import os
 
 filter=[".exe"] #Set the filtered file type.
 
+#Used to traversing all the executable files in specified directory and sort these in lexicographic order
+#return a list contains all the executable file path
 def traversing_dir(dirname):
 
     result = []#All files
