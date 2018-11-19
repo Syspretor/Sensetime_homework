@@ -12,19 +12,15 @@ import subprocess
 
 '''
 used to judge if a file is a executable file by "ll -x command"
-@:param (String）dirname - the path of the file
 '''
 def judge_executable(dirname):
-	judge_executable=os.system("ls -p -F "+dirname+" | grep -q '*' ")
+	judge_executable=os.access(dirname,os.X_OK)
+	#judge_executable=os.system("ls -p -F "+dirname+" | grep -q '*' ")
 	#&&("file"+file_path+" | grep -q \"executable\"")
-	if judge_executable == 0:
-		return True
-	elif judge_executable == 256:
-		return False
+	return judge_executable
 '''
 Used to traversing all the executable files in specified directory and sort these in lexicographic order
 return a list contains all the executable file path
-@:param (String) dirname: the path of the diretory
 '''
 def traversing_dir(dirname):
 
@@ -45,23 +41,29 @@ def traversing_dir(dirname):
 	return sorted(result) #return a list contains all the executable file path which sorted in lexicograhic orderr
 
 '''
-main function, get the specified path
+main module
 '''
 if __name__ == "__main__":
-
 	dirname = sys.argv[1]
-	#judge if the path exists
-	if os.path.exists(dirname) == False:
-		print("the directory does not exist")
-		exit()
+	#dirname=input()
+	try:
+		os.listdir(dirname)
+	except IOError as e1:
+		print("File error:"+str(e1))
+
+	if not os.listdir(dirname):
+		print("Exception:this is an empty directory")
+		exit(1)
 
 	sorted_result=traversing_dir(dirname)
+
 	errorList=[]
+
 	for i in range(len(sorted_result)):
 		try:
 			print("-----Executing: ",sorted_result[i],"-----")
 			stdout=subprocess.call(sorted_result[i])
 			print("\n-----Executing Successfully-----\n")
 		except OSError as e:
-			errorList.aapend(sorted_result[i])#the error list contains the executed failed files
+			errorList.aapend(sorted_result[i])
 			print("Execution failed when running",sorted_result[i]," Error:",e)
