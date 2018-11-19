@@ -23,7 +23,7 @@ python runExecutableFiles.py [specified directory path]
 2. Have a handle of OS exception, with execute errror
 3. Generate a error list contains exectued failed files' path
 4. Support parameter to specify target dir
-5. handle exception:
+5. Handle exception:
   ```
   a. empty dir
   b. target dir doesn't exist
