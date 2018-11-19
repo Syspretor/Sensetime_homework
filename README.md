@@ -18,4 +18,16 @@ A python script that read all the executable files in the specified directory, a
 ```
 python run_executable_files.py [specified directory path]
 ```
-## Note
+## Update log
+1. Have a judgement of if the target directory exists.
+2. Have a handle of OS exception, with execute errror
+3. Generate a error list contains exectued failed files' path
+4. Support parameter to specify target dir
+5. handle exception:
+  ```
+  a. empty dir
+  b. target dir doesn't exist
+  c. missing dir
+  ```
+ 6. Use ```os.access(file,X_OK)``` in stead of linux command, judge the executability of a file directly.
+ 
