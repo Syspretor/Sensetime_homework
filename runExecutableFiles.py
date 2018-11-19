@@ -11,22 +11,22 @@ import sys
 import subprocess
 
 '''
-used to judge if a file is a executable file by "ll -x command"
+used to judge if a file is a executable file by os.access(file,X_OK)
+@:param (String) filepath: the full path of the file need judging it's executability
 '''
-def judge_executable(dirname):
-	judge_executable=os.access(dirname,os.X_OK)
-	#judge_executable=os.system("ls -p -F "+dirname+" | grep -q '*' ")
-	#&&("file"+file_path+" | grep -q \"executable\"")
-	return judge_executable
+def judge_executable(filepath):
+	ifExecutable=os.access(filepath,os.X_OK)#judge the executability of the file, if it can be executed, it will return True
+	return ifExecutable
 '''
 Used to traversing all the executable files in specified directory and sort these in lexicographic order
-return a list contains all the executable file path
+return a list contains all the executable file path in lexicographic order
+@:param （String)dirname: the full path of target specified directory need traversing
 '''
 def traversing_dir(dirname):
 
-	result = []#All files
+	result = [] #All files
 
-	for maindir, subdir, file_name_list in os.walk(dirname):
+	for maindir, subdir, file_name_list in os.walk(dirname):#traversing the target dir
 
 		#print("1:",maindir) #Current home directory
 		#print("2:",subdir) #All directories under the current home directory
@@ -34,33 +34,31 @@ def traversing_dir(dirname):
 
 		for filename in file_name_list:
 			file_path = os.path.join(maindir, filename)#Merge into one full path
-			#file_type= os.path.splitext(apath)[0]  #Get the file suffix [0] to get something other than the file name
 			if judge_executable(file_path)==True:
 				result.append(file_path)
 
 	return sorted(result) #return a list contains all the executable file path which sorted in lexicograhic orderr
 
 '''
-main module
+main function, read the target specific dir from parameter
 '''
 if __name__ == "__main__":
 	dirname = sys.argv[1]
-	#dirname=input()
-	try:
+	try:#handle the exception of unexisted dir
 		os.listdir(dirname)
 	except IOError as e1:
 		print("File error:"+str(e1))
 
-	if not os.listdir(dirname):
+	if not os.listdir(dirname):#handle exception of the empty dir, exit and throw exception 1
 		print("Exception:this is an empty directory")
 		exit(1)
 
-	sorted_result=traversing_dir(dirname)
+	sorted_result=traversing_dir(dirname)#generate list contains all the exxcuted files in target specified dir in lexicographic order
 
-	errorList=[]
+	errorList=[]#a list contains all the executed failed files
 
 	for i in range(len(sorted_result)):
-		try:
+		try:#handle the exception of executing
 			print("-----Executing: ",sorted_result[i],"-----")
 			stdout=subprocess.call(sorted_result[i])
 			print("\n-----Executing Successfully-----\n")
