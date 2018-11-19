@@ -16,7 +16,7 @@ A python script that read all the executable files in the specified directory, a
 1. open terminal
 2. run the following command
 ```
-python run_executable_files.py [specified directory path]
+python runExecutableFiles.py [specified directory path]
 ```
 ## Update log
 1. Have a judgement of if the target directory exists.
