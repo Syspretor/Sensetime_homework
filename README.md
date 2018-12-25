@@ -15,7 +15,7 @@ A python script that read all the executable files in the specified directory, a
 ### Run
 1. open terminal
 2. run the following command
-###### test
+##### test
 ```
 python runExecutableFiles.py [specified directory path]
 ```
